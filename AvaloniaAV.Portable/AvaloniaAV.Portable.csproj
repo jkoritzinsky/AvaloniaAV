@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E73184D4-3C54-4EBB-BA88-7F65B785CE79}</ProjectGuid>
+    <ProjectGuid>{200D5ADD-AECA-465B-9FDC-8F8DAABE4D97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AvaloniaAV</RootNamespace>
-    <AssemblyName>AvaloniaAV</AssemblyName>
+    <RootNamespace>AvaloniaAV.Portable</RootNamespace>
+    <AssemblyName>AvaloniaAV.Portable</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,11 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Generic.cs" />
-    <Compile Include="ISupportPlaybackControl.cs" />
-    <Compile Include="StyleModule.cs" />
-    <Compile Include="VideoSource.cs" />
-    <Compile Include="VideoViewer.cs" />
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\AvaloniaAV\AvaloniaAV.csproj">
+      <Project>{e73184d4-3c54-4ebb-ba88-7f65b785ce79}</Project>
+      <Name>AvaloniaAV</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArrayExtensions.cs" />
+    <Compile Include="HttpMJpegSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,11 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Generic.xaml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
