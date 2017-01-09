@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaAV", "AvaloniaAV\AvaloniaAV.csproj", "{E73184D4-3C54-4EBB-BA88-7F65B785CE79}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaAV.Portable", "AvaloniaAV.Portable\AvaloniaAV.Portable.csproj", "{200D5ADD-AECA-465B-9FDC-8F8DAABE4D97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderTest", "RenderTest\RenderTest.csproj", "{E147B78F-F1DC-46E0-8C24-949C334A174E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvaloniaAV.MediaFoundation", "AvaloniaAV.MediaFoundation\AvaloniaAV.MediaFoundation.csproj", "{093F185C-71AF-4D91-AED6-13160B404D27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,18 @@ Global
 		{E147B78F-F1DC-46E0-8C24-949C334A174E}.Release|x64.Build.0 = Release|x64
 		{E147B78F-F1DC-46E0-8C24-949C334A174E}.Release|x86.ActiveCfg = Release|x86
 		{E147B78F-F1DC-46E0-8C24-949C334A174E}.Release|x86.Build.0 = Release|x86
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Debug|x64.Build.0 = Debug|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Debug|x86.Build.0 = Debug|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Release|x64.ActiveCfg = Release|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Release|x64.Build.0 = Release|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Release|x86.ActiveCfg = Release|Any CPU
+		{093F185C-71AF-4D91-AED6-13160B404D27}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

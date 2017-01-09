@@ -37,6 +37,7 @@
     <Compile Include="Generic.cs" />
     <Compile Include="ISupportPlaybackControl.cs" />
     <Compile Include="StyleModule.cs" />
+    <Compile Include="SystemCamera.cs" />
     <Compile Include="VideoSource.cs" />
     <Compile Include="VideoViewer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\AvaloniaAV.MediaFoundation\AvaloniaAV.MediaFoundation.csproj">
+      <Project>{093f185c-71af-4d91-aed6-13160b404d27}</Project>
+      <Name>AvaloniaAV.MediaFoundation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AvaloniaAV\AvaloniaAV.csproj">
       <Project>{e73184d4-3c54-4ebb-ba88-7f65b785ce79}</Project>
       <Name>AvaloniaAV</Name>
