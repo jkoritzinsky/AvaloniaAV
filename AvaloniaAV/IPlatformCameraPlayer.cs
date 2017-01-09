@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace AvaloniaAV
 {
-    public interface IPlatformPlayerProvider
+    public interface IPlatformCameraPlayer
     {
-        IPlatformPlayer CreatePlayer();
-        IPlatformCameraPlayer CreateCameraPlayer();
+        void OpenCamera(SystemCamera camera);
+
+        IObservable<IPlayback> Playback { get; }
     }
 }

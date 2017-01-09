@@ -1,0 +1,19 @@
+﻿{
+  "supports": {
+    "net46.app": {},
+    "uwp.10.0.app": {}
+  },
+  "dependencies": {
+    "Avalonia": "0.4.0",
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+    "NETStandard.Library": "1.6.0",
+    "SharpDX.Direct3D11": "3.1.1",
+    "SharpDX.MediaFoundation": "3.1.1",
+    "system.reactive": "3.0.0"
+  },
+  "frameworks": {
+    "netstandard1.2": {
+      "imports": "portable-net451+win81"
+    }
+  }
+}

@@ -36,9 +36,11 @@
   <ItemGroup>
     <Compile Include="Frame.cs" />
     <Compile Include="Generic.cs" />
+    <Compile Include="IPlatformCameraPlayer.cs" />
     <Compile Include="IPlatformPlayer.cs" />
     <Compile Include="IPlatformPlayerProvider.cs" />
     <Compile Include="IPlayback.cs" />
+    <Compile Include="ISystemCameraProvider.cs" />
     <Compile Include="StyleModule.cs" />
     <Compile Include="SystemCamera.cs" />
     <Compile Include="VideoSource.cs" />

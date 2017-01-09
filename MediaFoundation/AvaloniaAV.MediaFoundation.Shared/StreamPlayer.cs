@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpDX.Direct3D11;
@@ -8,6 +7,7 @@ using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using SharpDX.MediaFoundation;
 using Device = SharpDX.DXGI.Device;
+using System.Reactive.Subjects; 
 
 namespace AvaloniaAV.MediaFoundation
 {
@@ -36,7 +36,7 @@ namespace AvaloniaAV.MediaFoundation
             }
 
             frameTime = TimeSpan.FromSeconds(1.0 / fps);
-            currentState.OnNext(StreamPlayerState.NoSource);
+            SetCurrentState(StreamPlayerState.NoSource);
         }
 
         private void OnEngineEvent(MediaEngineEvent mediaevent, long param1, int param2)
@@ -44,14 +44,14 @@ namespace AvaloniaAV.MediaFoundation
             switch (mediaevent)
             {
                 case MediaEngineEvent.DurationChange:
-                    duration.OnNext(TimeSpan.FromSeconds(engine.Duration));
+                    SetDuration(engine.Duration);
                     break;
                 case MediaEngineEvent.LoadStart:
-                    currentState.OnNext(StreamPlayerState.LoadingSource);
+                    SetCurrentState(StreamPlayerState.LoadingSource);
                     break;
                 case MediaEngineEvent.LoadedMetadata:
                     int x, y;
-                    duration?.OnNext(TimeSpan.FromSeconds(engine.Duration));
+                    SetDuration(engine.Duration);
                     engine.GetNativeVideoSize(out x, out y);
                     using (var d3DDevice = device.QueryInterface<SharpDX.Direct3D11.Device>())
                     using (var texture = new Texture2D(d3DDevice, new Texture2DDescription
@@ -66,10 +66,10 @@ namespace AvaloniaAV.MediaFoundation
                     } 
                     break;
                 case MediaEngineEvent.CanPlay:
-                    currentState.OnNext(StreamPlayerState.CanPlay);
+                    SetCurrentState(StreamPlayerState.CanPlay);
                     break;
                 case MediaEngineEvent.CanPlayThrough:
-                    currentState.OnNext(StreamPlayerState.CanPlayFully);
+                    SetCurrentState(StreamPlayerState.CanPlayFully);
                     break;
             }
         }
@@ -82,16 +82,19 @@ namespace AvaloniaAV.MediaFoundation
             engine.Load();
             tokenSource = new CancellationTokenSource();
         }
-
-        // Bug in SharpDX makes the ByteStream constructor unusable from PCLs
-        //public void Open(Stream stream, Uri uri)
-        //{
-        //    tokenSource.Cancel();
-        //    frameLoopTask = null;
-        //    engine.SetSourceFromByteStream(new ByteStream(stream), uri.ToString());
-        //    engine.Load();
-        //    tokenSource = new CancellationTokenSource();
-        //}
+        
+        public void Open(Stream stream, Uri uri)
+        {
+#if !REFERENCE
+            tokenSource.Cancel();
+            frameLoopTask = null;
+            engine.SetSourceFromByteStream(new ByteStream(stream), uri.ToString());
+            engine.Load();
+            tokenSource = new CancellationTokenSource();
+#else
+            throw new NotImplementedException();
+#endif
+        }
 
         public void Play()
         {
@@ -120,20 +123,37 @@ namespace AvaloniaAV.MediaFoundation
                 {
                     engine.GetNativeVideoSize(out int width, out int height);
                     engine.TransferVideoFrame(Surface, null, new RawRectangle(0, 0, width, height), null);
-                    currentTime.OnNext(new TimeSpan(time));
+                    SetCurrentTime(new TimeSpan(time));
                 }
                 await Task.Delay(frameTime, token);
             }
         }
 
-        private readonly Subject<TimeSpan> currentTime = new Subject<TimeSpan>();
+        private void SetCurrentTime(TimeSpan time)
+        {
+            currentTime.OnNext(time);
+        }
+
+        private void SetDuration(double secsDuration)
+        {
+            duration.OnNext(double.IsInfinity(secsDuration) || double.IsNaN(secsDuration)
+                ? (TimeSpan?) null
+                : TimeSpan.FromSeconds(secsDuration));
+        }
+
+        private void SetCurrentState(StreamPlayerState state)
+        {
+            currentState.OnNext(state);
+        }
+
         public IObservable<TimeSpan> CurrentTime => currentTime;
+        private readonly Subject<TimeSpan> currentTime = new Subject<TimeSpan>();
 
-        private readonly Subject<TimeSpan> duration = new Subject<TimeSpan>();
-        public IObservable<TimeSpan> Duration => duration;
+        public IObservable<TimeSpan?> Duration => duration;
+        private readonly Subject<TimeSpan?> duration = new Subject<TimeSpan?>();
 
-        private readonly Subject<StreamPlayerState> currentState = new Subject<StreamPlayerState>();
         public IObservable<StreamPlayerState> CurrentState => currentState;
+        private readonly Subject<StreamPlayerState> currentState = new Subject<StreamPlayerState>();
 
         public Surface Surface { get; private set; }
 
