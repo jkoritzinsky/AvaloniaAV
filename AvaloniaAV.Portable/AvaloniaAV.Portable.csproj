@@ -42,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
-    <Compile Include="HttpMJpegSource.cs" />
+    <Compile Include="HttpMjpegPlayback.cs" />
+    <Compile Include="PlatformPlayer.cs" />
+    <Compile Include="PlatformPlayerProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Direct2D1" Version="0.4.1-build2590-alpha" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AvaloniaAV\AvaloniaAV.csproj" />
+    <ProjectReference Include="..\MediaFoundation\AvaloniaAV.MediaFoundation.NetFx\AvaloniaAV.MediaFoundation.NetFx.csproj" />
+  </ItemGroup>
+</Project>

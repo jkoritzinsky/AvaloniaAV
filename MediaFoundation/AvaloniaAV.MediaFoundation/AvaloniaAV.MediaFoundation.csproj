@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D1A7ACC-2047-4A52-9F9D-B0BE188BB6AE}</ProjectGuid>
+    <ProjectGuid>{5F1F9B6E-A4BC-402D-8000-90237CAAF5E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>AvaloniaAV.MediaFoundation</RootNamespace>
     <AssemblyName>AvaloniaAV.MediaFoundation</AssemblyName>

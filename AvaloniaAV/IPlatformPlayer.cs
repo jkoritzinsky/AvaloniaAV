@@ -8,6 +8,6 @@ namespace AvaloniaAV
         void OpenUri(Uri uri);
         void OpenStream(Stream stream, Uri uri);
 
-        IObservable<IPlayback> Playback { get; }
+        IObservable<IControllablePlayback> Playback { get; }
     }
 }

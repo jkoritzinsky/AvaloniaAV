@@ -5,13 +5,13 @@ namespace AvaloniaAV
 {
     public class Frame
     {
-        public Frame(Bitmap frameBitmap, TimeSpan time = default(TimeSpan))
+        public Frame(IBitmap frameBitmap, TimeSpan time = default(TimeSpan))
         {
             FrameBitmap = frameBitmap;
             Time = time;
         }
 
         public TimeSpan Time { get; }
-        public Bitmap FrameBitmap { get; }
+        public IBitmap FrameBitmap { get; }
     }
 }

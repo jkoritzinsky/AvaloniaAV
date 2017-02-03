@@ -39,12 +39,11 @@
     <Compile Include="IPlatformCameraPlayer.cs" />
     <Compile Include="IPlatformPlayer.cs" />
     <Compile Include="IPlatformPlayerProvider.cs" />
+    <Compile Include="IControllablePlayback.cs" />
     <Compile Include="IPlayback.cs" />
     <Compile Include="ISystemCameraProvider.cs" />
     <Compile Include="StyleModule.cs" />
     <Compile Include="SystemCamera.cs" />
-    <Compile Include="VideoSource.cs" />
-    <Compile Include="VideoViewer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

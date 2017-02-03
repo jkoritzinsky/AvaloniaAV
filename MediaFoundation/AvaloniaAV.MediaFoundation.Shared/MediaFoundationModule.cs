@@ -15,6 +15,7 @@ namespace AvaloniaAV.MediaFoundation
 #if !REFERENCE
             AvaloniaLocator.CurrentMutable.Bind<ISystemCameraProvider>().ToSingleton<SystemCameraProvider>();
 #endif
+            AvaloniaLocator.CurrentMutable.Bind<AvService>().ToSingleton<AvService>();
         }
     }
 }

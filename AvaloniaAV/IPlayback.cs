@@ -1,15 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AvaloniaAV
 {
-    public interface IPlayback
+    public interface IPlayback : IDisposable
     {
-        TimeSpan? Duration { get; }
-
-        void Play();
-        void Pause();
-        void Seek(TimeSpan span);
-
         IObservable<Frame> CurrentFrame { get; }
     }
 }

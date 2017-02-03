@@ -7,11 +7,19 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using System.Reactive.Subjects;
 
 namespace AvaloniaAV.Portable
 {
-    public class HttpMJpegSource : VideoSource
+    public class HttpMjpegPlayback : IControllablePlayback
     {
+        public static readonly IEnumerable<string> SupportedSchemes = new List<string>
+        {
+            "http",
+            "https",
+            "mjpeg"
+        };
+
         // magic 2 byte header for JPEG images
         private readonly byte[] JpegHeader = { 0xff, 0xd8 };
 
@@ -19,22 +27,21 @@ namespace AvaloniaAV.Portable
         private const int ChunkSize = 1024;
 
         private Uri stream;
-        private CancellationToken token;
-        public HttpMJpegSource(Uri streamUrl)
+        private CancellationTokenSource tokenSource;
+
+        public TimeSpan? Duration => null;
+
+        private Subject<Frame> frameSubject = new Subject<Frame>();
+        public IObservable<Frame> CurrentFrame => frameSubject;
+
+        public HttpMjpegPlayback(Uri streamUrl, CancellationTokenSource tokenSource = null)
         {
             stream = streamUrl;
-            token = default(CancellationToken);
-            Task.Run(() => StartStream());
+            this.tokenSource = tokenSource ?? new CancellationTokenSource();
+            Task.Run(() => StartStream(this.tokenSource.Token), tokenSource.Token);
         }
 
-        public HttpMJpegSource(Uri streamUrl, CancellationToken token)
-        {
-            stream = streamUrl;
-            this.token = token;
-            Task.Run(() => StartStream(), token);
-        }
-
-        private async Task StartStream()
+        private async Task StartStream(CancellationToken token)
         {
             using (var client = new HttpClient())
             {
@@ -93,7 +100,7 @@ namespace AvaloniaAV.Portable
                                             size += imageEnd;
 
                                             frameStream.Seek(0, SeekOrigin.Begin);
-                                            CurrentFrame.OnNext(new Bitmap(frameStream));
+                                            frameSubject.OnNext(new Frame(new Bitmap(frameStream)));
 
                                             // copy the leftover data to the start
                                             Array.Copy(buff, imageEnd, buff, 0, buff.Length - imageEnd);
@@ -111,10 +118,26 @@ namespace AvaloniaAV.Portable
                     }
                     catch (Exception)
                     {
-                        CurrentFrame.OnCompleted();
                     }
                 }
             }
+        }
+
+        public void Play()
+        {
+        }
+
+        public void Pause()
+        {
+        }
+
+        public void Seek(TimeSpan span)
+        {
+        }
+
+        public void Dispose()
+        {
+            tokenSource.Cancel();
         }
     }
 }
