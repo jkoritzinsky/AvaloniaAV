@@ -7,7 +7,7 @@ using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
 using SharpDX.MediaFoundation;
 using Device = SharpDX.DXGI.Device;
-using System.Reactive.Subjects; 
+using System.Reactive.Subjects;
 
 namespace AvaloniaAV.MediaFoundation
 {
@@ -18,6 +18,7 @@ namespace AvaloniaAV.MediaFoundation
         private readonly TimeSpan frameTime;
         private Task frameLoopTask;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
+
 
         public StreamPlayer(Device device, int fps)
         {
@@ -56,7 +57,7 @@ namespace AvaloniaAV.MediaFoundation
                     using (var d3DDevice = device.QueryInterface<SharpDX.Direct3D11.Device>())
                     using (var texture = new Texture2D(d3DDevice, new Texture2DDescription
                     {
-                        Format = Format.R32G32B32A32_Float,
+                        Format = Format.B8G8R8A8_UNorm,
                         Width = x,
                         Height = y
                     }))
@@ -85,15 +86,11 @@ namespace AvaloniaAV.MediaFoundation
         
         public void Open(Stream stream, Uri uri)
         {
-#if !REFERENCE
             tokenSource.Cancel();
             frameLoopTask = null;
             engine.SetSourceFromByteStream(new ByteStream(stream), uri.ToString());
             engine.Load();
             tokenSource = new CancellationTokenSource();
-#else
-            throw new NotImplementedException();
-#endif
         }
 
         public void Play()
@@ -107,7 +104,7 @@ namespace AvaloniaAV.MediaFoundation
 
         public void Pause()
         {
-            engine.Pause();
+            engine.Pause(); 
         }
 
         public void Seek(TimeSpan time)
