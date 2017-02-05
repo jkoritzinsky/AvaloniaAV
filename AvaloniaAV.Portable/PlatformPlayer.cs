@@ -7,7 +7,7 @@ namespace AvaloniaAV.Portable
 {
     internal class PlatformPlayer : IPlatformPlayer
     {
-        private Subject<IControllablePlayback> playbackSubject;
+        private Subject<IControllablePlayback> playbackSubject = new Subject<IControllablePlayback>();
         public IObservable<IControllablePlayback> Playback => playbackSubject;
 
         public void Dispose()
