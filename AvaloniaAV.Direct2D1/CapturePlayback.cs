@@ -39,16 +39,21 @@ namespace AvaloniaAV.Direct2D1
 
 
         private Surface lastSurface;
-        private FrameBitmap lastBitmap;
+        private Bitmap1 lastSurfaceBitmap;
         private Frame CreateFrame(Surface frameSurface)
         {
             if (lastSurface != frameSurface)
             {
                 lastSurface = frameSurface;
-                var bitmap = new Bitmap1(context, frameSurface);
-                lastBitmap = new FrameBitmap(bitmap);
+                var surfaceBitmap = new Bitmap1(context, frameSurface);
+                lastSurfaceBitmap = surfaceBitmap;
             }
-            return new Frame(lastBitmap);
+            var frameBitmap = new Bitmap(context, lastSurfaceBitmap.PixelSize,
+                new BitmapProperties(lastSurfaceBitmap.PixelFormat,
+                    lastSurfaceBitmap.DotsPerInch.Width,
+                    lastSurfaceBitmap.DotsPerInch.Height));
+            frameBitmap.CopyFromBitmap(lastSurfaceBitmap);
+            return new Frame(new FrameBitmap(frameBitmap));
         }
 
         public IObservable<Frame> CurrentFrame { get; private set; }

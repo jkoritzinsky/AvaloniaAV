@@ -8,6 +8,7 @@ using SharpDX.Mathematics.Interop;
 using SharpDX.MediaFoundation;
 using Device = SharpDX.DXGI.Device;
 using System.Reactive.Subjects;
+using SharpDX;
 
 namespace AvaloniaAV.MediaFoundation
 {
@@ -29,11 +30,9 @@ namespace AvaloniaAV.MediaFoundation
             {
                 manager.ResetDevice(device);
                 attributes.DxgiManager = manager;
-                attributes.VideoOutputFormat = (int)Format.R32G32B32A32_Float;
-                using (var baseEngine = new MediaEngine(factory, attributes, playbackCallback: OnEngineEvent))
-                {
-                    engine = baseEngine.QueryInterface<MediaEngineEx>();
-                }
+                attributes.VideoOutputFormat = (int)Format.B8G8R8A8_UNorm;
+                var baseEngine = new MediaEngine(factory, attributes, playbackCallback: OnEngineEvent);
+                engine = baseEngine.QueryInterface<MediaEngineEx>();
             }
 
             frameTime = TimeSpan.FromSeconds(1.0 / fps);
@@ -52,14 +51,20 @@ namespace AvaloniaAV.MediaFoundation
                     break;
                 case MediaEngineEvent.LoadedMetadata:
                     int x, y;
-                    SetDuration(engine.Duration);
                     engine.GetNativeVideoSize(out x, out y);
                     using (var d3DDevice = device.QueryInterface<SharpDX.Direct3D11.Device>())
                     using (var texture = new Texture2D(d3DDevice, new Texture2DDescription
                     {
                         Format = Format.B8G8R8A8_UNorm,
                         Width = x,
-                        Height = y
+                        Height = y,
+                        ArraySize = 1,
+                        MipLevels = 1,
+                        SampleDescription = new SampleDescription
+                        {
+                            Count = 1
+                        },
+                        BindFlags = BindFlags.RenderTarget
                     }))
                     {
                         Surface?.Dispose();
@@ -71,6 +76,14 @@ namespace AvaloniaAV.MediaFoundation
                     break;
                 case MediaEngineEvent.CanPlayThrough:
                     SetCurrentState(StreamPlayerState.CanPlayFully);
+                    break;
+                case MediaEngineEvent.Error:
+                    // We don't want to throw on this thread, so instead break the debugger
+                    if(System.Diagnostics.Debugger.IsAttached)
+                    {
+                        var exception = System.Runtime.InteropServices.Marshal.GetExceptionForHR(param2);
+                        System.Diagnostics.Debugger.Break();
+                    }
                     break;
             }
         }
@@ -114,15 +127,23 @@ namespace AvaloniaAV.MediaFoundation
 
         private async Task FrameLoopAsync(CancellationToken token)
         {
-            while (!token.IsCancellationRequested)
+            try
             {
-                if (engine.OnVideoStreamTick(out long time))
+                while (!token.IsCancellationRequested)
                 {
-                    engine.GetNativeVideoSize(out int width, out int height);
-                    engine.TransferVideoFrame(Surface, null, new RawRectangle(0, 0, width, height), null);
-                    SetCurrentTime(new TimeSpan(time));
+                    if (engine.OnVideoStreamTick(out long time))
+                    {
+                        engine.GetNativeVideoSize(out int width, out int height);
+                        engine.TransferVideoFrame(Surface, null, new RawRectangle(0, 0, width, height), null);
+                        SetCurrentTime(new TimeSpan(time));
+                    }
+                    await Task.Delay(frameTime, token);
                 }
-                await Task.Delay(frameTime, token);
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

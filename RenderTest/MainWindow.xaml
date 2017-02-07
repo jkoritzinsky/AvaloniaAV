@@ -2,4 +2,5 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Avalonia Render Test"
         xmlns:av="http://github.com/jkoritzinsky/avaloniaAV">
+  <av:VideoViewer VideoUri="D:\Source\AvaloniaAV\RenderTest\TestVideo.mp4" />
 </Window>

@@ -45,6 +45,7 @@
     <Compile Include="StyleModule.cs" />
     <Compile Include="SystemCamera.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VideoViewer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Avalonia.Animation, Version=0.4.1.0, Culture=neutral, processorArchitecture=MSIL">
