@@ -42,6 +42,7 @@
     <Compile Include="IControllablePlayback.cs" />
     <Compile Include="IPlayback.cs" />
     <Compile Include="ISystemCameraProvider.cs" />
+    <Compile Include="PlayPauseButton.cs" />
     <Compile Include="StyleModule.cs" />
     <Compile Include="SystemCamera.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

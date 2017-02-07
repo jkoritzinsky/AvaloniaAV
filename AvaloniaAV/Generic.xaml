@@ -6,13 +6,12 @@
         <ControlTemplate>
           <Panel>
             <Image Source="{TemplateBinding CurrentPlayback.CurrentFrame^.FrameBitmap}" />
-            <DockPanel Background="Black" Opacity="0.5" VerticalAlignment="Bottom">
-              <Button Background="Black" Name="PART_PlayPauseButton" DockPanel.Dock="Left">
-                <Path Fill="White" Data="M 0,0 L 0,100 L 50,50 L 0,0" />
-              </Button>
-              <TextBlock DockPanel.Dock="Right" Text="{TemplateBinding CurrentPlayback.Duration}" />
-              <!--<Slider IsVisible="false" Minimum="0" Value="{TemplateBinding CurrentPlayback.CurrentFrame^.Time}"
-                      Maximum="{TemplateBinding CurrentPlayback.Duration}" />-->
+            <DockPanel Background="Black" Opacity="0.5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
+              <local:PlayPauseButton Name="PART_PlayPauseButton" IsPlaying="{TemplateBinding IsPlaying}" />
+              <TextBlock DockPanel.Dock="Right" Text="{TemplateBinding CurrentPlayback.Duration}" Foreground="White" 
+                         VerticalAlignment="Center" />
+              <Slider IsVisible="false" Foreground="White" Minimum="0" Value="10"
+                      Maximum="20" />
             </DockPanel>
           </Panel>
         </ControlTemplate>
@@ -22,7 +21,25 @@
   <Style Selector="local|VideoViewer:seekable /template/ Slider">
     <Setter Property="IsVisible" Value="true" />
   </Style>
-  <Style Selector="local|VideoViewer:playing /template/ Button#PART_PlayPauseButton Path">
-    <Setter Property="Data" Value="M 0,0 L 0,100 L 33,100 L 33,0 L 0,0 Z M 66,0 L 66,100 L 100,100 L 0,100 L 66,100" />
+  <Style Selector="local|PlayPauseButton">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Path Fill="White" Data="M 5,0 L 5,50 L 50,25 Z" />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style Selector="local|PlayPauseButton:playing">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate>
+          <Canvas Width="50" Height="50">
+            <Rectangle Fill="White" Width="14" Height="40" Canvas.Top="5" Canvas.Left="5" />
+            <Rectangle Fill="White" Width="14" Height="40" Canvas.Top="5" Canvas.Left="28" />
+          </Canvas>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
 </Styles>
