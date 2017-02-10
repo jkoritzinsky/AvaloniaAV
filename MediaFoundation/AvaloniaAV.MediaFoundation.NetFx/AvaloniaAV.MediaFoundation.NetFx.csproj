@@ -130,6 +130,7 @@
   <ItemGroup>
     <Compile Include="CapturePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StreamPlayer.cs" />
     <Compile Include="SystemCameraProvider.cs" />
   </ItemGroup>
   <ItemGroup>

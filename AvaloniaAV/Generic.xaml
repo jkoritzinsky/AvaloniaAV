@@ -5,18 +5,29 @@
       <Setter.Value>
         <ControlTemplate>
           <Panel>
-            <Image Source="{TemplateBinding CurrentPlayback.CurrentFrame^.FrameBitmap}" />
+            <Image Source="{TemplateBinding CurrentPlayback.CurrentFrame^.FrameBitmap}" Name="PART_FrameViewer" />
             <DockPanel Background="Black" Opacity="0.5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
               <local:PlayPauseButton Name="PART_PlayPauseButton" IsPlaying="{TemplateBinding IsPlaying}" />
               <TextBlock DockPanel.Dock="Right" Text="{TemplateBinding CurrentPlayback.Duration}" Foreground="White" 
                          VerticalAlignment="Center" />
-              <Slider IsVisible="false" Foreground="White" Minimum="0" Value="10"
-                      Maximum="20" />
+              <Slider Foreground="White" Minimum="0"
+                      Value="{TemplateBinding CurrentPlayback.CurrentFrame^.Time, Converter={Static local:TimeToSecondsConverter.Instance}}"
+                      Maximum="{TemplateBinding CurrentPlayback.Duration, Converter={Static local:TimeToSecondsConverter.Instance}}"
+                      VerticalAlignment="Center"/>
             </DockPanel>
           </Panel>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
+  </Style>
+  <Style Selector="local|VideoViewer /template/ DockPanel">
+    <Setter Property="IsVisible" Value="false" />
+  </Style>
+  <Style Selector="local|VideoViewer:pointerover /template/ DockPanel">
+    <Setter Property="IsVisible" Value="true" />
+  </Style>
+  <Style Selector="local|VideoViewer:seekable /template/ Slider">
+    <Setter Property="IsVisible" Value="false" />
   </Style>
   <Style Selector="local|VideoViewer:seekable /template/ Slider">
     <Setter Property="IsVisible" Value="true" />

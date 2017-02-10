@@ -12,6 +12,7 @@ namespace AvaloniaAV
 {
     public class VideoViewer : TemplatedControl
     {
+        public const string FrameViewerPart = "PART_FrameViewer";
         public const string PlayPauseButtonPart = "PART_PlayPauseButton";
 
         public static readonly StyledProperty<Uri> VideoUriProperty
@@ -42,7 +43,7 @@ namespace AvaloniaAV
         {
             if (uri.IsAbsoluteUri && uri.Scheme == "resm")
             {
-                var uriWithoutScheme = new Uri(@"file://C:\" + uri.ToString().Substring("resm:".Length), UriKind.Absolute);
+                var uriWithoutScheme = new Uri(uri.ToString().Substring("resm:".Length), UriKind.Relative);
                 player.OpenStream(AvaloniaLocator.Current.GetService<IAssetLoader>().Open(uri), uriWithoutScheme);
             }
             else
@@ -55,6 +56,7 @@ namespace AvaloniaAV
         private IPlatformPlayer player;
         
         private Button playPauseButton;
+        private Image frameViewer;
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
@@ -66,6 +68,7 @@ namespace AvaloniaAV
             base.OnTemplateApplied(e);
 
             playPauseButton = e.NameScope.Get<Button>(PlayPauseButtonPart);
+            frameViewer = e.NameScope.Get<Image>(FrameViewerPart);
 
             playPauseButton.Click += ToggleIsPlaying;
         }
@@ -86,7 +89,7 @@ namespace AvaloniaAV
                 IsPlaying = !IsPlaying;
             }
         }
-
+        
         public Uri VideoUri
         {
             get

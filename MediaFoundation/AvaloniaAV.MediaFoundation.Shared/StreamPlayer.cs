@@ -12,7 +12,7 @@ using SharpDX;
 
 namespace AvaloniaAV.MediaFoundation
 {
-    public class StreamPlayer : IDisposable
+    public partial class StreamPlayer : IDisposable
     {
         private readonly Device device;
         private readonly MediaEngineEx engine;
@@ -69,6 +69,7 @@ namespace AvaloniaAV.MediaFoundation
                     {
                         Surface?.Dispose();
                         Surface = texture.QueryInterface<Surface>();
+                        SetCurrentTime(TimeSpan.Zero);
                     } 
                     break;
                 case MediaEngineEvent.CanPlay:
@@ -101,7 +102,7 @@ namespace AvaloniaAV.MediaFoundation
         {
             tokenSource.Cancel();
             frameLoopTask = null;
-            engine.SetSourceFromByteStream(new ByteStream(stream), uri.ToString());
+            engine.SetSourceFromByteStream(new ByteStream(stream), TempPathForUri(stream, uri));
             engine.Load();
             tokenSource = new CancellationTokenSource();
         }
