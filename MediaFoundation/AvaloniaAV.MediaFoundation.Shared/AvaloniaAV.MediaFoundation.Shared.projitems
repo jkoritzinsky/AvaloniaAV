@@ -6,11 +6,17 @@
     <SharedGUID>fa19aaa5-7473-4108-b51b-00b52f569e77</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>AvaloniaAV.MediaFoundation.Shared</Import_RootNamespace>
+    <Import_RootNamespace>AvaloniaAV.MediaFoundation</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AvService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CapturePlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DxgiExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\FramebufferCameraProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\FramebufferPlatformSurface.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\FramebufferStreamPlayback.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\LockedFramebuffer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\PlatformFramebufferPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MediaFoundationModule.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StreamPlayerState.cs" />

@@ -14,7 +14,6 @@ namespace AvaloniaAV.MediaFoundation
 {
     public partial class StreamPlayer : IDisposable
     {
-        private readonly Device device;
         private readonly MediaEngineEx engine;
         private readonly TimeSpan frameTime;
         private Task frameLoopTask;
@@ -23,7 +22,7 @@ namespace AvaloniaAV.MediaFoundation
 
         public StreamPlayer(Device device, int fps)
         {
-            this.device = device;
+            Device = device;
             using (var manager = new DXGIDeviceManager())
             using (var factory = new MediaEngineClassFactory())
             using (var attributes = new MediaEngineAttributes(2))
@@ -52,7 +51,7 @@ namespace AvaloniaAV.MediaFoundation
                 case MediaEngineEvent.LoadedMetadata:
                     int x, y;
                     engine.GetNativeVideoSize(out x, out y);
-                    using (var d3DDevice = device.QueryInterface<SharpDX.Direct3D11.Device>())
+                    using (var d3DDevice = Device.QueryInterface<SharpDX.Direct3D11.Device>())
                     using (var texture = new Texture2D(d3DDevice, new Texture2DDescription
                     {
                         Format = Format.B8G8R8A8_UNorm,
@@ -64,7 +63,7 @@ namespace AvaloniaAV.MediaFoundation
                         {
                             Count = 1
                         },
-                        BindFlags = BindFlags.RenderTarget
+                        BindFlags = BindFlags.RenderTarget,
                     }))
                     {
                         Surface?.Dispose();
@@ -175,6 +174,8 @@ namespace AvaloniaAV.MediaFoundation
         private readonly Subject<StreamPlayerState> currentState = new Subject<StreamPlayerState>();
 
         public Surface Surface { get; private set; }
+
+        public Device Device { get; }
 
         public void Dispose()
         {

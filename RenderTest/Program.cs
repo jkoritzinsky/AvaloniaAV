@@ -16,8 +16,10 @@ namespace RenderTest
             InitializeLogging();
 
             AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .UseAvaloniaModules()
+                .UseWin32()
+                .UseDirect2D1()
+                .AVUseAcceleratedDirect2D()
+                .UseAvaloniaAVStyles()
                 .Start<MainWindow>();
         }
 

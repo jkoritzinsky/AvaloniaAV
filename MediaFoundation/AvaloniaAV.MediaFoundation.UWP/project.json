@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "Avalonia": "0.4.0",
+    "Avalonia": "0.4.1-build2729-alpha",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "SharpDX.Direct3D11": "3.1.1",
     "SharpDX.MediaFoundation": "3.1.1",
