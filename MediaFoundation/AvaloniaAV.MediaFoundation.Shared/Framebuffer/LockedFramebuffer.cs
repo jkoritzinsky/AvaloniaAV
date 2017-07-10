@@ -23,7 +23,7 @@ namespace AvaloniaAV.MediaFoundation.Framebuffer
                 var description = texture.Description;
                 Width = description.Width;
                 Height = description.Height;
-                Dpi = new Size(1 / 96.0, 1 / 96.0);
+                Dpi = new Size(96, 96);
                 Format = description.Format.ToAvalonia();
             }
         }
