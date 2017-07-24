@@ -50,8 +50,15 @@ namespace AvaloniaAV.MediaFoundation.Framebuffer
 
                 using (var context = new DeviceContext(d3DDevice))
                 using (var gpuTexture = gpuSurface.QueryInterface<Texture2D>())
+                using (var query = new Query(d3DDevice, new QueryDescription
+                        {
+                            Type = QueryType.Event,
+                        }))
                 {
+                    context.Begin(query);
                     context.CopyResource(gpuTexture, cpuTexture);
+                    context.End(query);
+                    context.Flush();
                 }
             }
 

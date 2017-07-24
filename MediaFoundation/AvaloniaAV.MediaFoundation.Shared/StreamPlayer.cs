@@ -142,7 +142,7 @@ namespace AvaloniaAV.MediaFoundation
             }
             catch (Exception)
             {
-
+                Pause();
                 throw;
             }
         }
