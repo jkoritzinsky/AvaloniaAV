@@ -14,9 +14,10 @@ namespace AvaloniaAV.MediaFoundation
             }
         }
 
-        public StreamPlayer GetStreamPlayer(int fps = 60)
+        public StreamPlayer GetStreamPlayer(bool gpu, int fps = 60)
         {
-            return new StreamPlayer(AvaloniaLocator.Current.GetService<SharpDX.DXGI.Device>(), fps);
+            var dxgiDevice = AvaloniaLocator.Current.GetService<SharpDX.DXGI.Device>();
+            return gpu ? new StreamPlayer(dxgiDevice, fps) : new CpuStreamPlayer(dxgiDevice, fps);
         }
 
         public CapturePlayer GetCapturePlayer()

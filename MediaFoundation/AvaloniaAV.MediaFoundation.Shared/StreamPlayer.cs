@@ -18,11 +18,10 @@ namespace AvaloniaAV.MediaFoundation
         private readonly TimeSpan frameTime;
         private Task frameLoopTask;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
-
-
+        
         public StreamPlayer(Device device, int fps)
         {
-            Device = device;
+            Device = device.QueryInterface<SharpDX.Direct3D11.Device>();
             using (var manager = new DXGIDeviceManager())
             using (var factory = new MediaEngineClassFactory())
             using (var attributes = new MediaEngineAttributes(2))
@@ -51,8 +50,7 @@ namespace AvaloniaAV.MediaFoundation
                 case MediaEngineEvent.LoadedMetadata:
                     int x, y;
                     engine.GetNativeVideoSize(out x, out y);
-                    using (var d3DDevice = Device.QueryInterface<SharpDX.Direct3D11.Device>())
-                    using (var texture = new Texture2D(d3DDevice, new Texture2DDescription
+                    using (var texture = new Texture2D(Device, new Texture2DDescription
                     {
                         Format = Format.B8G8R8A8_UNorm,
                         Width = x,
@@ -66,8 +64,9 @@ namespace AvaloniaAV.MediaFoundation
                         BindFlags = BindFlags.RenderTarget,
                     }))
                     {
-                        Surface?.Dispose();
-                        Surface = texture.QueryInterface<Surface>();
+                        TargetSurface?.Dispose();
+                        TargetSurface = texture.QueryInterface<Surface>();
+                        OnNewSurface(x, y);
                         SetCurrentTime(TimeSpan.Zero);
                     } 
                     break;
@@ -86,6 +85,10 @@ namespace AvaloniaAV.MediaFoundation
                     }
                     break;
             }
+        }
+
+        protected virtual void OnNewSurface(int x, int y)
+        {
         }
 
         public void Open(Uri uri)
@@ -134,7 +137,8 @@ namespace AvaloniaAV.MediaFoundation
                     if (engine.OnVideoStreamTick(out long time))
                     {
                         engine.GetNativeVideoSize(out int width, out int height);
-                        engine.TransferVideoFrame(Surface, null, new RawRectangle(0, 0, width, height), null);
+                        engine.TransferVideoFrame(TargetSurface, null, new RawRectangle(0, 0, width, height), null);
+                        UpdateOutputSurface();
                         SetCurrentTime(new TimeSpan(time));
                     }
                     await Task.Delay(frameTime, token);
@@ -145,6 +149,10 @@ namespace AvaloniaAV.MediaFoundation
                 Pause();
                 throw;
             }
+        }
+
+        protected virtual void UpdateOutputSurface()
+        {
         }
 
         private void SetCurrentTime(TimeSpan time)
@@ -173,12 +181,15 @@ namespace AvaloniaAV.MediaFoundation
         public IObservable<StreamPlayerState> CurrentState => currentState;
         private readonly Subject<StreamPlayerState> currentState = new Subject<StreamPlayerState>();
 
-        public Surface Surface { get; private set; }
+        public virtual Surface Surface => TargetSurface;
 
-        public Device Device { get; }
+        protected Surface TargetSurface { get; private set; }
+
+        protected SharpDX.Direct3D11.Device Device { get; }
 
         public void Dispose()
         {
+            Device.Dispose();
             engine.Shutdown();
             engine.Dispose();
             Surface.Dispose();

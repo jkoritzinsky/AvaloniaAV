@@ -18,61 +18,17 @@ namespace AvaloniaAV.MediaFoundation.Framebuffer
         {
             this.underlyingPlayer = underlyingPlayer;
             this.duration = duration;
-            CurrentFrame = underlyingPlayer.CurrentTime.Select(time => SetNewFrame(time, underlyingPlayer.Device, underlyingPlayer.Surface));
+            CurrentFrame = underlyingPlayer.CurrentTime.Select(time => SetNewFrame(time, underlyingPlayer.Surface));
         }
 
-
-        private Surface lastGpuSurface;
-        private Texture2D cpuTexture;
-        private FramebufferFrame SetNewFrame(TimeSpan time, SharpDX.DXGI.Device device, Surface gpuSurface)
+        private FramebufferFrame SetNewFrame(TimeSpan time, Surface cpuSurface)
         {
-            using (var d3DDevice = device.QueryInterface<SharpDX.Direct3D11.Device>())
-            {
-                if (lastGpuSurface != gpuSurface)
-                {
-                    cpuTexture?.Dispose();
-                    cpuTexture = new Texture2D(d3DDevice, new Texture2DDescription
-                    {
-                        Format = gpuSurface.Description.Format,
-                        Width = gpuSurface.Description.Width,
-                        Height = gpuSurface.Description.Height,
-                        ArraySize = 1,
-                        MipLevels = 1,
-                        SampleDescription = new SampleDescription
-                        {
-                            Count = 1
-                        },
-                        CpuAccessFlags = CpuAccessFlags.Read,
-                        Usage = ResourceUsage.Staging,
-                    });
-                    lastGpuSurface = gpuSurface;
-                }
-
-                using (var context = new DeviceContext(d3DDevice))
-                using (var gpuTexture = gpuSurface.QueryInterface<Texture2D>())
-                using (var query = new Query(d3DDevice, new QueryDescription
-                        {
-                            Type = QueryType.Event,
-                        }))
-                {
-                    context.Begin(query);
-                    context.CopyResource(gpuTexture, cpuTexture);
-                    context.End(query);
-                    context.Flush();
-                }
-            }
-
-            return new FramebufferFrame(new FramebufferPlatformSurface(cpuTexture.QueryInterface<Surface>()), time);
+            return new FramebufferFrame(new FramebufferPlatformSurface(cpuSurface), time);
         }
 
         public IObservable<FramebufferFrame> CurrentFrame { get; }
 
         public TimeSpan? Duration => duration;
-
-        public void Dispose()
-        {
-            cpuTexture?.Dispose();
-        }
 
         public void Pause()
         {
@@ -87,6 +43,10 @@ namespace AvaloniaAV.MediaFoundation.Framebuffer
         public void Seek(TimeSpan time)
         {
             underlyingPlayer.Seek(time);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

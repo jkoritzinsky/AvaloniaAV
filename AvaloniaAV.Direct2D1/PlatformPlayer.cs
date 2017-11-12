@@ -16,7 +16,7 @@ namespace AvaloniaAV.Direct2D1
 
         public PlatformPlayer(AvService avService, SharpDX.Direct2D1.Device d2DDevice)
         {
-            underlyingPlayer = avService.GetStreamPlayer();
+            underlyingPlayer = avService.GetStreamPlayer(gpu: true);
             Playback = underlyingPlayer.Duration
                 .Select(duration => new StreamPlayback(d2DDevice, underlyingPlayer, duration));
             Playback.Subscribe(playback =>

@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AvService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CapturePlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CpuStreamPlayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DxgiExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\FramebufferCameraProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framebuffer\FramebufferPlatformSurface.cs" />

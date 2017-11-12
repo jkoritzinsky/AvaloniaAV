@@ -14,7 +14,7 @@ namespace AvaloniaAV.MediaFoundation.Framebuffer
 
         public PlatformFramebufferPlayer(AvService avService)
         {
-            underlyingPlayer = avService.GetStreamPlayer();
+            underlyingPlayer = avService.GetStreamPlayer(gpu: false);
             Playback = underlyingPlayer.Duration
                 .Select(duration => new FramebufferStreamPlayback(underlyingPlayer, duration));
             Playback.Subscribe(playback =>
