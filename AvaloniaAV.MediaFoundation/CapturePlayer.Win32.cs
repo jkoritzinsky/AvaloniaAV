@@ -11,8 +11,8 @@ namespace AvaloniaAV.MediaFoundation
 {
     public partial class CapturePlayer
     {
-        //private CaptureEngineClassFactory factory;
         private MediaAttributes captureEngineAttributes = new MediaAttributes();
+        private CaptureEngineClassFactory captureFactory = new CaptureEngineClassFactory();
 
         public CapturePlayer(Device device)
         {
@@ -20,9 +20,8 @@ namespace AvaloniaAV.MediaFoundation
             {
                 manager.ResetDevice(device);
 
-                //captureEngineAttributes.Set(CaptureEngineAttributeKeys.D3DManager, manager); 
+                captureEngineAttributes.Set(CaptureEngineAttributeKeys.D3DManager, manager);
             }
-
         }
 
         partial void StartCaptureCore(SystemCamera camera, CancellationToken token)
@@ -37,11 +36,16 @@ namespace AvaloniaAV.MediaFoundation
 
                 using (videoSource)
                 {
-                    // var captureEngine = new CaptureEngine(factory);
-                    // captureEngine.Initialize(event => OnEngineEvent(captureEngine, event), factory, attributes, null, videoSource);
-                    throw new NotImplementedException();  
+                    var captureEngine = new CaptureEngine(captureFactory);
+                    captureEngine.CaptureEngineEvent += evt => OnEngineEvent(captureEngine, evt);
+                    captureEngine.Initialize(captureEngineAttributes, null, videoSource);
                 }
             }
+        }
+
+        private void OnEngineEvent(CaptureEngine engine, MediaEvent mediaEvent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

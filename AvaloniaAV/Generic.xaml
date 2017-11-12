@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AvaloniaAV;assembly=AvaloniaAV">
   <Style Selector="local|VideoViewer">
+    <Setter Property="Background" Value="Transparent" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>
@@ -11,8 +12,8 @@
               <TextBlock DockPanel.Dock="Right" Text="{TemplateBinding CurrentPlayback.Duration}" Foreground="White" 
                          VerticalAlignment="Center" />
               <Slider Foreground="White" Minimum="0"
-                      Value="{TemplateBinding CurrentPlayback.CurrentFrame^.Time, Converter={Static local:TimeToSecondsConverter.Instance}}"
-                      Maximum="{TemplateBinding CurrentPlayback.Duration, Converter={Static local:TimeToSecondsConverter.Instance}}"
+                      Value="{TemplateBinding CurrentPlayback.CurrentFrame^.Time, Converter={x:Static local:TimeToSecondsConverter.Instance}}"
+                      Maximum="{TemplateBinding CurrentPlayback.Duration, Converter={x:Static local:TimeToSecondsConverter.Instance}}"
                       VerticalAlignment="Center"/>
             </DockPanel>
           </Panel>
@@ -21,12 +22,15 @@
     </Setter>
   </Style>
   <Style Selector="local|VideoViewer /template/ DockPanel">
-    <Setter Property="IsVisible" Value="false" />
-  </Style>
-  <Style Selector="local|VideoViewer:pointerover /template/ DockPanel">
     <Setter Property="IsVisible" Value="true" />
   </Style>
-  <Style Selector="local|VideoViewer:seekable /template/ Slider">
+  <Style Selector="local|VideoViewer:playing /template/ DockPanel">
+    <Setter Property="IsVisible" Value="false" />
+  </Style>
+  <Style Selector="local|VideoViewer:playing:pointerover /template/ DockPanel">
+    <Setter Property="IsVisible" Value="true" />
+  </Style>
+  <Style Selector="local|VideoViewer /template/ Slider">
     <Setter Property="IsVisible" Value="false" />
   </Style>
   <Style Selector="local|VideoViewer:seekable /template/ Slider">

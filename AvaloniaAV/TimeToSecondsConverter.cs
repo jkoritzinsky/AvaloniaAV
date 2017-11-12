@@ -24,6 +24,6 @@ namespace AvaloniaAV
             return TimeSpan.FromSeconds(seconds);
         }
 
-        public static TimeToSecondsConverter Instance { get; set; } = new TimeToSecondsConverter();
+        public static TimeToSecondsConverter Instance { get; } = new TimeToSecondsConverter();
     }
 }

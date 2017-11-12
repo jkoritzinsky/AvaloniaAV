@@ -109,6 +109,16 @@ namespace AvaloniaAV.MediaFoundation
             tokenSource = new CancellationTokenSource();
         }
 
+        private string TempPathForUri(Stream stream, Uri uri)
+        {
+            var path = Path.GetTempFileName();
+            using (var file = File.OpenWrite(path))
+            {
+                stream.CopyTo(file);
+            }
+            return path;
+        }
+
         public void Play()
         {
             if (frameLoopTask == null)

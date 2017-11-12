@@ -13,7 +13,6 @@ namespace RenderTest
         static void Main(string[] args)
         {
             SharpDX.Configuration.EnableReleaseOnFinalizer = true;
-            InitializeLogging();
 
             AppBuilder.Configure<App>()
                 .UseWin32()
@@ -22,17 +21,6 @@ namespace RenderTest
                 .AVUseAcceleratedDirect2D()
                 .UseAvaloniaAVStyles()
                 .Start<MainWindow>();
-        }
-
-        // This will be made into a runtime configuration extension soon!
-        private static void InitializeLogging()
-        {
-#if DEBUG
-            SerilogLogger.Initialize(new LoggerConfiguration()
-                .MinimumLevel.Warning()
-                .WriteTo.Trace(outputTemplate: "{Area}: {Message}")
-                .CreateLogger());
-#endif
         }
     }
 }

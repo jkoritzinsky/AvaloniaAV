@@ -12,15 +12,17 @@ namespace AvaloniaAV.Direct2D1
 {
     class CapturePlayback : IPlayback
     {
+        private readonly SharpDX.WIC.ImagingFactory factory;
         private readonly CapturePlayer player;
         private readonly DeviceContext context;
 
-        public CapturePlayback(SharpDX.Direct2D1.Device device, CapturePlayer player)
+        public CapturePlayback(SharpDX.Direct2D1.Device device, SharpDX.WIC.ImagingFactory factory, CapturePlayer player)
         {
             this.player = player;
             context = new DeviceContext(device, DeviceContextOptions.EnableMultithreadedOptimizations);
 
             CurrentFrame = player.CurrentSurface.Select(surface => CreateFrame(surface));
+            this.factory = factory;
         }
 
         public TimeSpan? Duration => null;
@@ -53,7 +55,7 @@ namespace AvaloniaAV.Direct2D1
                     lastSurfaceBitmap.DotsPerInch.Width,
                     lastSurfaceBitmap.DotsPerInch.Height));
             frameBitmap.CopyFromBitmap(lastSurfaceBitmap);
-            return new Frame(new FrameBitmap(frameBitmap));
+            return new Frame(new FrameBitmap(factory, frameBitmap));
         }
 
         public IObservable<Frame> CurrentFrame { get; private set; }

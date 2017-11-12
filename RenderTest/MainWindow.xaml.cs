@@ -5,8 +5,6 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using AvaloniaAV;
-using AvaloniaAV.Portable;
 
 namespace RenderTest
 {

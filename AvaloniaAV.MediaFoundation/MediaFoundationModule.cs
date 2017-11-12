@@ -36,7 +36,7 @@ namespace AvaloniaAV.MediaFoundation
 
             MediaManager.Startup();
             Application.Current.OnExit += (obj, args) => MediaManager.Shutdown();
-#if !REFERENCE
+#if NET461 || NETCOREAPP2_0
             AvaloniaLocator.CurrentMutable.Bind<ISystemCameraProvider>().ToSingleton<SystemCameraProvider>();
 #endif
             AvaloniaLocator.CurrentMutable.Bind<AvService>().ToSingleton<AvService>();

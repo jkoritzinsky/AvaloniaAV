@@ -13,13 +13,15 @@ namespace AvaloniaAV.Direct2D1
         public IPlatformPlayer CreatePlayer()
         {
             return new PlatformPlayer(AvaloniaLocator.Current.GetService<AvService>(),
-                AvaloniaLocator.Current.GetService<SharpDX.Direct2D1.Device>());
+                AvaloniaLocator.Current.GetService<SharpDX.Direct2D1.Device>(),
+                AvaloniaLocator.Current.GetService<SharpDX.WIC.ImagingFactory>());
         }
 
         public IPlatformCameraPlayer CreateCameraPlayer()
         {
             return new CameraPlayer(AvaloniaLocator.Current.GetService<AvService>(),
-                AvaloniaLocator.Current.GetService<SharpDX.Direct2D1.Device>());
+                AvaloniaLocator.Current.GetService<SharpDX.Direct2D1.Device>(),
+                AvaloniaLocator.Current.GetService<SharpDX.WIC.ImagingFactory>());
         }
     }
 }

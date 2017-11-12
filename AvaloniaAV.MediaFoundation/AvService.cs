@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using System;
 
 namespace AvaloniaAV.MediaFoundation
 {
@@ -22,10 +23,10 @@ namespace AvaloniaAV.MediaFoundation
 
         public CapturePlayer GetCapturePlayer()
         {
-#if NETFX
+#if NET461 || NETCOREAPP2_0
             return new CapturePlayer(AvaloniaLocator.Current.GetService<SharpDX.DXGI.Device>());
 #else
-            return new CapturePlayer();
+            throw new NotImplementedException();
 #endif
         }
     }

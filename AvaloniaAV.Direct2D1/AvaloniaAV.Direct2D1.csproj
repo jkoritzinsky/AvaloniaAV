@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia.Direct2D1" Version="0.4.1-build2729-alpha" />
+    <PackageReference Include="Avalonia.Direct2D1" Version="0.5.2-build4232-alpha" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaAV\AvaloniaAV.csproj" />
-    <ProjectReference Include="..\MediaFoundation\AvaloniaAV.MediaFoundation.NetFx\AvaloniaAV.MediaFoundation.NetFx.csproj" />
+    <ProjectReference Include="..\AvaloniaAV.MediaFoundation\AvaloniaAV.MediaFoundation.csproj" />
   </ItemGroup>
 </Project>
