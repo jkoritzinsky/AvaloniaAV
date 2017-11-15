@@ -17,8 +17,7 @@ namespace Avalonia
         public static TAppBuilder AVUseAcceleratedDirect2D<TAppBuilder>(this TAppBuilder builder)
             where TAppBuilder: AppBuilderBase<TAppBuilder>, new()
         {
-            new AvaloniaAV.Direct2D1.Module();
-            return builder;
+            return builder.AfterSetup(_ => new AvaloniaAV.Direct2D1.Module());
         }
     }
 }

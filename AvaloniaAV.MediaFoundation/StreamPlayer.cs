@@ -99,13 +99,17 @@ namespace AvaloniaAV.MediaFoundation
             engine.Load();
             tokenSource = new CancellationTokenSource();
         }
-        
+
+        private ByteStream byteStream;
+
         public void Open(Stream stream, Uri uri)
         {
             tokenSource.Cancel();
             frameLoopTask = null;
-            engine.SetSourceFromByteStream(new ByteStream(stream), TempPathForUri(stream, uri));
+            var temp = byteStream;
+            engine.SetSourceFromByteStream(byteStream = new ByteStream(stream), TempPathForUri(stream, uri)); 
             engine.Load();
+            temp?.Dispose();
             tokenSource = new CancellationTokenSource();
         }
 
@@ -203,6 +207,7 @@ namespace AvaloniaAV.MediaFoundation
             engine.Shutdown();
             engine.Dispose();
             Surface.Dispose();
+            byteStream?.Dispose();
         }
     }
 }

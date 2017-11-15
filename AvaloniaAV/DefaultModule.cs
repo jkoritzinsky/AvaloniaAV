@@ -16,8 +16,7 @@ namespace Avalonia
         public static TAppBuilder UseAvaloniaAV<TAppBuilder>(this TAppBuilder builder)
             where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
         {
-            new AvaloniaAV.DefaultModule();
-            return builder;
+            return builder.AfterSetup(_ => new AvaloniaAV.DefaultModule());
         }
     }
 }

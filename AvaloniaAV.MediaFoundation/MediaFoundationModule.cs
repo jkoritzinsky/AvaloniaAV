@@ -12,8 +12,7 @@ namespace Avalonia
         public static TAppBuilder AVUseMediaFoundation<TAppBuilder>(this TAppBuilder builder)
             where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
         {
-            new AvaloniaAV.MediaFoundation.MediaFoundationModule();
-            return builder;
+            return builder.AfterSetup(_ => new AvaloniaAV.MediaFoundation.MediaFoundationModule());
         }
     }
 }
