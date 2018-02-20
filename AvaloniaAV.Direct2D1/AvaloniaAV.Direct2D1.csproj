@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia.Direct2D1" Version="0.5.2-build4232-alpha" />
+    <PackageReference Include="Avalonia.Direct2D1" Version="0.6.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaAV\AvaloniaAV.csproj" />

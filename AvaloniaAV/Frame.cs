@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace AvaloniaAV
 {
-    public class Frame
+    public class Frame : IDisposable
     {
         public Frame(IBitmap frameBitmap, TimeSpan time = default(TimeSpan))
         {
@@ -25,7 +25,10 @@ namespace AvaloniaAV
                     {
                         for (int i = 0; i < framebuffer.Height; i++)
                         {
-                            Unsafe.CopyBlock((byte*)framebuffer.Address + i * framebuffer.RowBytes, (byte*)bitmapBuffer.Address + i * bitmapBuffer.RowBytes, (uint)bitmapBuffer.RowBytes); 
+                            Unsafe.CopyBlockUnaligned(
+                                (byte*)framebuffer.Address + i * framebuffer.RowBytes,
+                                (byte*)bitmapBuffer.Address + i * bitmapBuffer.RowBytes,
+                                (uint)bitmapBuffer.RowBytes); 
                         } 
                     }
                 }
@@ -35,5 +38,10 @@ namespace AvaloniaAV
 
         public TimeSpan Time { get; }
         public IBitmap FrameBitmap { get; }
+
+        public void Dispose()
+        {
+            FrameBitmap.Dispose();
+        }
     }
 }

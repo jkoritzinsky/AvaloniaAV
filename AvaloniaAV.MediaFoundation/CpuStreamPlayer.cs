@@ -8,8 +8,14 @@ namespace AvaloniaAV.MediaFoundation
 {
     class CpuStreamPlayer : StreamPlayer
     {
+        private DeviceContext context;
+
         public CpuStreamPlayer(SharpDX.DXGI.Device device, int fps) : base(device, fps)
         {
+            using (var d3d11device = device.QueryInterface<SharpDX.Direct3D11.Device>())
+            {
+                context = new DeviceContext(d3d11device); 
+            }
         }
 
         public override Surface Surface => CpuSurface;
@@ -44,9 +50,9 @@ namespace AvaloniaAV.MediaFoundation
             base.UpdateOutputSurface();
             using (var targetResource = TargetSurface.QueryInterface<SharpDX.Direct3D11.Resource>())
             using (var cpuResource = CpuSurface.QueryInterface<SharpDX.Direct3D11.Resource>())
-            using (var device3 = Device.QueryInterface<SharpDX.Direct3D11.Device3>())
             {
-                Device.ImmediateContext.ResolveSubresource(targetResource, 0, cpuResource, 0, Format.B8G8R8A8_UNorm);
+                context.ResolveSubresource(targetResource, 0, cpuResource, 0, Format.B8G8R8A8_UNorm);
+                context.Flush();
             }
         }
     }

@@ -18,12 +18,8 @@ namespace AvaloniaAV.Direct2D1
         {
             underlyingPlayer = avService.GetStreamPlayer(gpu: true);
             Playback = underlyingPlayer.Duration
-                .Select(duration => new StreamPlayback(d2DDevice, factory, underlyingPlayer, duration));
-            Playback.Subscribe(playback =>
-            {
-                currentPlayback?.Dispose();
-                currentPlayback = playback;
-            });
+                .Select(duration => new StreamPlayback(d2DDevice, factory, underlyingPlayer, duration))
+                .DisposeCurrentOnNext();
         }
 
         public void Dispose()
@@ -41,7 +37,6 @@ namespace AvaloniaAV.Direct2D1
             underlyingPlayer.Open(stream, uri);
         }
 
-        private IControllablePlayback currentPlayback;
         public IObservable<IControllablePlayback> Playback { get; }
     }
 }

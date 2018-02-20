@@ -18,7 +18,7 @@ namespace AvaloniaAV.Direct2D1
             context = new DeviceContext(device, DeviceContextOptions.EnableMultithreadedOptimizations);
             Duration = duration;
 
-            CurrentFrame = player.CurrentTime.Select(time => CreateFrame(player.Surface, time));
+            CurrentFrame = player.CurrentTime.Select(time => CreateFrame(player.Surface, time)).DisposeCurrentOnNext();
             this.factory = factory;
         }
 

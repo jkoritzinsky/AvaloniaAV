@@ -18,7 +18,8 @@ namespace AvaloniaAV.Framebuffer
 
         public TimeSpan? Duration => framebufferPlayback.Duration;
 
-        public IObservable<Frame> CurrentFrame => framebufferPlayback.CurrentFrame.Select(frame => new Frame(frame));
+        public IObservable<Frame> CurrentFrame
+            => framebufferPlayback.CurrentFrame.Select(frame => new Frame(frame)).DisposeCurrentOnNext();
 
         public void Dispose() => framebufferPlayback.Dispose();
 
