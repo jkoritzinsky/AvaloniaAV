@@ -100,7 +100,10 @@ namespace AvaloniaAV.Portable
                                             size += imageEnd;
 
                                             frameStream.Seek(0, SeekOrigin.Begin);
-                                            frameSubject.OnNext(new Frame(new Bitmap(frameStream)));
+                                            using (var bitmap = new Bitmap(frameStream))
+                                            {
+                                                frameSubject.OnNext(new Frame(bitmap.PlatformImpl)); 
+                                            }
 
                                             // copy the leftover data to the start
                                             Array.Copy(buff, imageEnd, buff, 0, buff.Length - imageEnd);

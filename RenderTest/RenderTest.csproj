@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AvaloniaAV.Direct2D1\AvaloniaAV.Direct2D1.csproj" />
     <ProjectReference Include="..\AvaloniaAV.MediaFoundation\AvaloniaAV.MediaFoundation.csproj" />
-    <ProjectReference Include="..\AvaloniaAV.Portable\AvaloniaAV.Portable.csproj" />
     <ProjectReference Include="..\AvaloniaAV\AvaloniaAV.csproj" />
   </ItemGroup>
 

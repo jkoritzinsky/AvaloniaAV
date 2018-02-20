@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using AvaloniaAV.Framebuffer;
 using AvaloniaAV.Framebuffer.Adapters;
 using System;
@@ -29,7 +30,9 @@ namespace AvaloniaAV
         {
             AvaloniaLocator.CurrentMutable
                 .Bind<IPlatformPlayerProvider>()
-                .ToConstant(new PlatformCameraProviderAdapter(AvaloniaLocator.Current.GetService<IPlatformFramebufferPlayerProvider>()));
+                .ToConstant(new PlatformCameraProviderAdapter(
+                    AvaloniaLocator.Current.GetService<IPlatformRenderInterface>(),
+                    AvaloniaLocator.Current.GetService<IPlatformFramebufferPlayerProvider>()));
         }
     }
 }

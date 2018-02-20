@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Platform;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
@@ -9,17 +10,19 @@ namespace AvaloniaAV.Framebuffer
 {
     class PlaybackAdapter : IControllablePlayback
     {
+        private readonly IPlatformRenderInterface renderInterface;
         private readonly IFramebufferPlayback framebufferPlayback;
 
-        public PlaybackAdapter(IFramebufferPlayback playback)
+        public PlaybackAdapter(IPlatformRenderInterface renderInterface, IFramebufferPlayback playback)
         {
             framebufferPlayback = playback;
+            this.renderInterface = renderInterface;
         }
 
         public TimeSpan? Duration => framebufferPlayback.Duration;
 
         public IObservable<Frame> CurrentFrame
-            => framebufferPlayback.CurrentFrame.Select(frame => new Frame(frame)).DisposeCurrentOnNext();
+            => framebufferPlayback.CurrentFrame.Select(frame => new Frame(renderInterface, frame)).DisposeCurrentOnNext();
 
         public void Dispose() => framebufferPlayback.Dispose();
 

@@ -2,24 +2,26 @@
 using Avalonia.Media.Imaging;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
+using Avalonia.Platform;
+using Avalonia.Utilities;
 
 namespace AvaloniaAV
 {
     public class Frame : IDisposable
     {
-        public Frame(IBitmap frameBitmap, TimeSpan time = default(TimeSpan))
+        public Frame(IRef<IBitmapImpl> frameBitmap, TimeSpan time = default(TimeSpan))
         {
             FrameBitmap = frameBitmap;
             Time = time;
         }
 
-        public Frame(Framebuffer.FramebufferFrame frame)
+        public Frame(IPlatformRenderInterface renderInterface, Framebuffer.FramebufferFrame frame)
         {
             Time = frame.Time;
             using (var framebuffer = frame.Framebuffer.Lock())
             {
-                var writableBitmap = new WritableBitmap(framebuffer.Width, framebuffer.Height, framebuffer.Format);
-                using (var bitmapBuffer = writableBitmap.Lock())
+                var writableBitmap = RefCountable.Create(renderInterface.CreateWritableBitmap(framebuffer.Width, framebuffer.Height, framebuffer.Format));
+                using (var bitmapBuffer = writableBitmap.Item.Lock())
                 {
                     unsafe
                     {
@@ -37,7 +39,7 @@ namespace AvaloniaAV
         }
 
         public TimeSpan Time { get; }
-        public IBitmap FrameBitmap { get; }
+        public IRef<IBitmapImpl> FrameBitmap { get; }
 
         public void Dispose()
         {

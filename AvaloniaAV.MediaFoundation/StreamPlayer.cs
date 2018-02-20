@@ -148,7 +148,7 @@ namespace AvaloniaAV.MediaFoundation
             {
                 while (!token.IsCancellationRequested)
                 {
-                    if (engine.OnVideoStreamTick(out long time))
+                    if (engine.OnVideoStreamTick(out long time) && time >= 0)
                     {
                         engine.GetNativeVideoSize(out int width, out int height);
                         engine.TransferVideoFrame(TargetSurface, null, new RawRectangle(0, 0, width, height), null);

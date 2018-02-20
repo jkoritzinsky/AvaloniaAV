@@ -1,4 +1,6 @@
-﻿using AvaloniaAV.MediaFoundation;
+﻿using Avalonia.Direct2D1.Media;
+using Avalonia.Utilities;
+using AvaloniaAV.MediaFoundation;
 using SharpDX.Direct2D1;
 using SharpDX.DXGI;
 using System;
@@ -55,7 +57,7 @@ namespace AvaloniaAV.Direct2D1
                     lastSurfaceBitmap.DotsPerInch.Width,
                     lastSurfaceBitmap.DotsPerInch.Height));
             frameBitmap.CopyFromBitmap(lastSurfaceBitmap);
-            return new Frame(new FrameBitmap(factory, frameBitmap));
+            return new Frame(RefCountable.Create(new D2DBitmapImpl(factory, frameBitmap)));
         }
 
         public IObservable<Frame> CurrentFrame { get; private set; }

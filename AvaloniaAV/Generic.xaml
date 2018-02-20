@@ -6,7 +6,7 @@
       <Setter.Value>
         <ControlTemplate>
           <Panel>
-            <Image Source="{TemplateBinding CurrentPlayback.CurrentFrame^.FrameBitmap}" Name="PART_FrameViewer" />
+            <Image Name="PART_FrameViewer" />
             <DockPanel Background="Black" Opacity="0.5" VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
               <local:PlayPauseButton Name="PART_PlayPauseButton" IsPlaying="{TemplateBinding IsPlaying}" />
               <TextBlock DockPanel.Dock="Right" Text="{TemplateBinding CurrentPlayback.Duration}" Foreground="White" 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Platform;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,17 @@ namespace AvaloniaAV.Framebuffer.Adapters
 {
     class PlatformCameraProviderAdapter : IPlatformPlayerProvider
     {
+        private readonly IPlatformRenderInterface renderInterface;
         private readonly IPlatformFramebufferPlayerProvider provider;
 
-        public PlatformCameraProviderAdapter(IPlatformFramebufferPlayerProvider playerProvider)
+        public PlatformCameraProviderAdapter(IPlatformRenderInterface renderInterface, IPlatformFramebufferPlayerProvider playerProvider)
         {
             provider = playerProvider;
+            this.renderInterface = renderInterface;
         }
 
-        public IPlatformCameraPlayer CreateCameraPlayer() => new PlatformCameraAdapter(provider.CreateCameraPlayer());
+        public IPlatformCameraPlayer CreateCameraPlayer() => new PlatformCameraAdapter(renderInterface, provider.CreateCameraPlayer());
 
-        public IPlatformPlayer CreatePlayer() => new PlatformPlayerAdapter(provider.CreatePlayer());
+        public IPlatformPlayer CreatePlayer() => new PlatformPlayerAdapter(renderInterface, provider.CreatePlayer());
     }
 }

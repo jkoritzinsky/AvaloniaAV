@@ -2,37 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 
 namespace AvaloniaAV
 {
     public static class ObservableExtensions
     {
-        public static IObservable<IList<T>> SlidingBuffer<T>(this IObservable<T> observable, int windowSize)
+        private class DisposingSubject<T> : ISubject<T>
+            where T : IDisposable
         {
-            return Enumerable.Range(1, windowSize - 1)
-                .Select(i => observable.Take(i).ToList())
-                .Merge()
-                .Concat(Enumerable.Range(1, windowSize)
-                    .Select(i => observable.Skip(i).Buffer(i))
-                    .Merge());
+            private readonly ISubject<T> inner = new Subject<T>();
+            private readonly WeakReference<IDisposable> lastValue = new WeakReference<IDisposable>(null);
+
+            public void OnCompleted()
+            {
+                inner.OnCompleted();
+            }
+
+            public void OnError(Exception error)
+            {
+                inner.OnError(error);
+            }
+
+            public void OnNext(T value)
+            {
+                inner.OnNext(value);
+                if (lastValue.TryGetTarget(out var disposable))
+                {
+                    disposable.Dispose();
+                }
+                lastValue.SetTarget(value);
+            }
+
+            public IDisposable Subscribe(IObserver<T> observer)
+            {
+                return inner.Subscribe(observer);
+            }
         }
 
         public static IObservable<T> DisposeCurrentOnNext<T>(this IObservable<T> observable)
             where T: IDisposable
         {
-            return observable.SlidingBuffer(2).Select(items =>
-            {
-                if (items.Count == 2)
-                {
-                    items[0]?.Dispose();
-                    return items[1];
-                }
-                else
-                {
-                    return items[0];
-                }
-            });
+            var subject = new DisposingSubject<T>();
+            observable.Subscribe(subject);
+            return subject;
         }
     }
 }

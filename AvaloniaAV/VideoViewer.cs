@@ -64,11 +64,20 @@ namespace AvaloniaAV
             {
                 playPauseButton.Click -= ToggleIsPlaying; 
             }
+            if (frameViewer != null)
+            {
+                frameViewer[Image.SourceProperty] = AvaloniaProperty.UnsetValue; 
+            }
 
             base.OnTemplateApplied(e);
 
             playPauseButton = e.NameScope.Get<Button>(PlayPauseButtonPart);
             frameViewer = e.NameScope.Get<Image>(FrameViewerPart);
+            frameViewer[!Image.SourceProperty] = this.GetObservable(CurrentPlaybackProperty)
+                .SelectMany(playback => playback?.CurrentFrame ?? Observable.Never<Frame>())
+                .DisposeCurrentOnNext()
+                .Select(frame => new Bitmap(frame.FrameBitmap))
+                .DisposeCurrentOnNext().ToBinding();
 
             playPauseButton.Click += ToggleIsPlaying;
         }
